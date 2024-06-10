@@ -1,0 +1,5 @@
+# Redirect the root URL to the fire.html page
+/ /index 301
+
+# Redirect any other request to a 404 page (optional)
+/* /404.html 404
