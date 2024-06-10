@@ -1,53 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Get Your IP</title>
-  <link rel="stylesheet" type="text/css" href="./styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-</head>
-<body>
-  <div class="container">
-    <h1>Your IP Address</h1>
-    <div class="response-container" style="display: none;">
-      <div id="ip-address"></div>
-      <button id="copy-button" onclick="copyContent()">
-        <i class="far fa-copy"></i>
-      </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Your IP</title>
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Your IP Address</h1>
+      <div class="response-container" style="display: none">
+        <div id="ip-address"></div>
+        <button id="copy-button" onclick="copyContent()">
+          <i class="far fa-copy"></i>
+        </button>
+      </div>
     </div>
-  </div>
-  <script>
-    const workerUrl = 'https://ipv4-worker.opariffazman.com'
-    async function getIpAddress() {
-      try {
-        const response = await fetch(workerUrl);
-        if (response.ok) {
-          const data = await response.json();
-          const ipAddress = data.ip;
-          document.querySelector('.response-container').style.display = 'flex';
-          document.getElementById('ip-address').textContent = ipAddress;
-        } else {
-          document.getElementById('ip-address').textContent = 'Failed to retrieve IP address.';
+    <script>
+      const awsIpEndpoint = "https://checkip.amazonaws.com"
+      async function getIpAddress() {
+        try {
+          const response = await fetch(awsIpEndpoint)
+          if (response.ok) {
+            const ipAddress = await response.text()
+            document.querySelector(".response-container").style.display = "flex"
+            document.getElementById("ip-address").textContent = ipAddress
+          } else {
+            document.getElementById("ip-address").textContent =
+              "Failed to retrieve IP address."
+          }
+        } catch (error) {
+          console.error("Error retrieving IP address:", error)
+          document.getElementById("ip-address").textContent =
+            "An error occurred while retrieving the IP address."
         }
-      } catch (error) {
-        console.error('Error retrieving IP address:', error);
-        document.getElementById('ip-address').textContent = 'An error occurred while retrieving the IP address.';
       }
-    }
 
-    function copyContent() {
-      const ipAddress = document.getElementById('ip-address').textContent;
-      navigator.clipboard.writeText(ipAddress).then(() => {
-        const originalMessage = document.getElementById('ip-address').textContent;
-        document.getElementById('ip-address').textContent = 'Copied!';
-        setTimeout(() => {
-          document.getElementById('ip-address').textContent = originalMessage;
-        }, 2000);
-      }).catch(error => console.error('Error copying IP address:', error));
-    }
+      function copyContent() {
+        const ipAddress = document.getElementById("ip-address").textContent
+        navigator.clipboard
+          .writeText(ipAddress)
+          .then(() => {
+            const originalMessage =
+              document.getElementById("ip-address").textContent
+            document.getElementById("ip-address").textContent = "Copied!"
+            setTimeout(() => {
+              document.getElementById("ip-address").textContent =
+                originalMessage
+            }, 2000)
+          })
+          .catch(error => console.error("Error copying IP address:", error))
+      }
 
-    window.onload = getIpAddress;
-  </script>
-</body>
+      window.onload = getIpAddress
+    </script>
+  </body>
 </html>
